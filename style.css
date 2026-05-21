@@ -12,45 +12,93 @@ body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 
   Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
-
-/* Menu Positioning */
-.navbar {
-  top: 0;
-  z-index: 100;
-  display: flex;
-  position: sticky;
-  padding: 0rem 2rem;
-  align-items:center;
-  justify-content: flex-end;
+#menu-toggle {
+  display: none;
 }
+/* ========================================================= */
 
+/* ========================================================= */
 /* Menu Bar */
 .nav-panel {
-  background-color: #023e8a;
-  border-left: 1px solid #ade8f4;   
+  background-color: #023e8a;  
   border-right: 1px solid #ade8f4;  
   border-bottom: 1px solid #ade8f4; 
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 250px;
+  z-index: 1000;
+  padding: 6rem 1.5rem 3rem 1.5rem; 
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
+  transform: translateX(-100%);
+  transition: transform 0.3s ease-in-out;
 }
 
-/* Links In Menu */
+#menu-toggle:checked ~ .nav-panel {
+  transform: translateX(0);
+}
+
+/* Links */
 .nav-links {
-  gap: 5rem;
+  gap: 1.2rem;
   display: flex;
   list-style: none;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
 }
 .nav-links a {
   color: #cbd5e1;  
   font-size: 1.1rem; 
   text-decoration: none; 
+  transition: color 0.2s ease;
 }
 
 /* Text Color when hovered over */
 .nav-links a:hover {
   color: #38bdf8;
 }
+/* ========================================================== */
 
+/* ========================================================== */
+/* Menu Collapse Button */
+.toggle-btn {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 1100;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  background-color: #023e8a; 
+  border: 1px solid #ade8f4;
+  padding: 0.8rem 1rem;
+  border-left: 4px solid #38bdf8;
+  transform-origin: center;
+  transition: background-color 0.2s ease, transform 0.3s ease-in-out;
+}
+
+.toggle-btn:hover {
+  background-color: #0353a4;
+  border-color: #38bd38;
+}
+
+.bar {
+  width: 25px;
+  height: 3px;
+  background-color: #caf0f8;
+  display: block;
+}
+
+/* Rotate Button as menu opens */
+#menu-toggle:checked ~ .toggle-btn {
+  transform:rotate(90deg);
+}
+/* ========================================================== */
+
+/* ========================================================== */
 /* Search Bar */
 .search-container {
    width: 100%;
@@ -59,11 +107,11 @@ body {
   padding: 1rem 2rem;
   justify-content: center;
 }
-
 .search-box {
-  border: 1px;
+  border: 1px solid #ade8f4;
   display: flex;
   align-items: center;
   padding: 1.2rem 2.5rem;
   background-color: #023e8a;
 }
+/* ========================================================== */

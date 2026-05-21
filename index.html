@@ -3,32 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Website - Home</title>
-  <!-- Links to your shared stylesheet -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <nav class="navbar">
-    <div class="nav-panel">
-      <ul class="nav-links">
-        <li><a href="#" class="nav-links">News</a></li>
-        <li><a href="#" class="nav-links">Markets</a></li>
-        <li><a href="#" class="nav-links">Services</a></li>
-      </ul>
-    </div>
+   <input type="checkbox" id="menu-toggle">
+
+    <!-- Button to Open/Close menu-->
+     <label for="menu-toggle" class="toggle-btn">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+     </label>
+
+     <nav class="nav-panel">
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-btn">News</a></li>
+      <li><a href="#">Markets</a></li>
+      <li><a href="#">Services</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
   </nav>
 
-  <!-- Search Bar -->
   <div class="search-container">
     <form class="search-box" action="/search" method="GET">
       <input type="text" placeholder="Search tickers, news..." name="q">
-      <button type="submit">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-      </button>
     </form>
   </div>
 
 </body>
 </html>
-
