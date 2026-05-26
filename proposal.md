@@ -19,4 +19,5 @@
 ## Nice
 
 - Store data locally until the next search
+- Chat Bot
 
