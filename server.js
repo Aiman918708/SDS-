@@ -8,7 +8,7 @@ const KEY = 'UYUQUW30JIS47IQU';
 app.get('/api/stock/:ticker', async (req, res) => {
   try {
     const ticker = req.params.ticker;
-    const url = `https://alphavantage.co{ticker}&apikey=${KEY}`;
+    const url = `https://alphavantage.co${ticker}&apikey=${KEY}`;
     const apiResponse = await fetch(url);
     const data = await apiResponse.json();
 
