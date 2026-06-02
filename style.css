@@ -1,150 +1,93 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 body {
-  padding-top: 80px;
+  padding-top: 60px;
+  background-color: #02010a;
 }
-#menu-toggle {
-  display: none;
-}
-/* ========================================================= */
 
-/* ========================================================= */
-/* Menu Bar */
-.nav-panel {
-  background-color: #042f68;  
-  border-right: 1px solid #0b778d;  
-  border-bottom: 1px solid #064f5e; 
-
-  position: fixed;
+/* Menu */
+.top-nav {
   top: 0;
   left: 0;
-  height: 100%;
-  width: 250px;
-  z-index: 1000;
-  padding: 6rem 1.5rem 3rem 1.5rem; 
-  box-shadow: 4px 0 20px rgba(128, 52, 52, 0.3);
-  transform: translateX(-100%);
-  transition: transform 0.3s ease-in-out;
-}
-
-#menu-toggle:checked ~ .nav-panel {
-  transform: translateX(0);
-}
-
-/* Links */
-.nav-links {
-  gap: 1.2rem;
   display: flex;
-  list-style: none;
-  flex-direction: column;
-  align-items: flex-start;
+  position: fixed;
+  align-items: center;
+
+  width: 100%;
+  height: 55px;
+  background-color: #04052e;
+  border-bottom: 1px solid #22007c;
+
+  gap: 30px;
+  z-index: 2000;
+  padding: 0 30px;
 }
-.nav-links a {
-  color: #b35396;  
-  font-size: 1.1rem; 
-  text-decoration: none; 
+.top-nav a{
+  text-decoration: none;
+  color: #f9f5ff;
+  font-weight: 500;
+  font-size: 0.95rem;
   transition: color 0.2s ease;
 }
-
-/* Text Color when hovered over */
-.nav-links a:hover {
-  color: #b936ae;
+.top-nav a:hover {
+  color: #60a5fa;
 }
-/* ========================================================== */
-
-/* ========================================================== */
-/* Menu Collapse Button */
-.toggle-btn {
-  position: fixed;
-  top: 0.5rem;
-  left: 0.5rem;
-  z-index: 1100;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  cursor: pointer;
-  background-color: #023e8a; 
-  border: 1px solid #ade8f4;
-  padding: 0.8rem 1rem;
-  border-left: 4px solid #012230;
-  transform-origin: center;
-  transition: background-color 0.2s ease, transform 0.3s ease-in-out;
-}
-
-.toggle-btn:hover {
-  background-color: #04274b;
-  border-color: #8d1c00;
-}
-
-.bar {
-  width: 25px;
-  height: 3px;
-  background-color: #49003f;
-  display: block;
-}
-
-/* Rotate Button as menu opens */
-#menu-toggle:checked ~ .toggle-btn {
-  transform:rotate(90deg);
-}
-/* ========================================================== */
-
-/* ========================================================== */
 /* Search Bar */
 .search-container {
   display: flex;
-  justify-content: center;
-  margin-top: 40px;
   padding: 0 20px;
+  margin-top: 50px;
+  justify-content: center;
 }
-
 .search-box {
-  width: 100%;
-  max-width: 800px;
-
-  display: flex;
-  align-items: center;
   gap: 12px;
-
+  width: 100%;
+  display: flex;
+  max-width: 700px;
   padding: 14px 20px;
+  align-items: center;
 
-  background: #1e293b;
-  border: 1px solid #334155;
-  border-radius: 12px;
-
-  transition: border-color 0.2s ease,
-              box-shadow 0.2s ease;
+  border: 1.5px solid;
+  border-radius: 10px;
+  background: #04052e;
+  border: 1px solid #22007c;
 }
-
-.search-box:focus-within {
-  border-color: #3b82f6;
-  box-shadow: 0 0 10px rgba(59, 130, 246, 0.25);
+.search-box input {
+  flex: 1;
+  width: 100%;
+  border: none;
+  outline: none;
+  color: #f9f5ff;
+  background: transparent;
 }
 .search-icon {
   width: 18px;
   height: 18px;
   flex-shrink: 0;
-  stroke: #9ca3af;
+  stroke: #cbf7ed;
 }
 
-.main-content {
-  height: 100vh;
-  overflow-y: auto;
+/* Ticker */
+.ticker-wrap {
+  position: fixed;
+  top: 55px;
+  width: 100%;
+  height: 30px;
+  background: #030424;
+  overflow: hidden;
+  border-bottom: 1px solid #22007c;
+  z-index: 1900;
 }
-/* ========================================================== */
-
-/*=========================================================== */
-.stock-card {
-  width: 90%;
-  max-width: 500px;
-  margin: 2rem auto;
-  background: #1e293b;
-  border-radius: 12px;
-  padding: 1.5rem;
-  border: 1px solid #334155;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+.ticker {
+  white-space: nowrap;
+  color: #cbf7ed;
+  line-height: 30px;
+  padding-left: 100%;
+  animation: ticker-scroll 30s linear infinite;
+}
+@keyframes ticker-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
 }
