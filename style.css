@@ -5,11 +5,7 @@
 }
 
 body {
-  color: #caf0f8;
-  overflow-x: hidden;
-  background-color: #010133;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 
-  Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  padding-top: 80px;
 }
 #menu-toggle {
   display: none;
@@ -100,38 +96,55 @@ body {
 /* ========================================================== */
 /* Search Bar */
 .search-container {
-   width: 100%;
   display: flex;
-  margin-top: 15vh;
-  padding: 1rem 2rem;
   justify-content: center;
+  margin-top: 40px;
+  padding: 0 20px;
 }
+
 .search-box {
-  border: 1px solid #9713d467;
+  width: 100%;
+  max-width: 800px;
+
   display: flex;
   align-items: center;
-  padding: 0.8rem 1.4rem;
-  background-color: #021c3fce;
-  width: 100%;
-  max-width: 650px;
-  border-radius: 13px;
-  gap: 0.8rem;
-  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  gap: 12px;
+
+  padding: 14px 20px;
+
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 12px;
+
+  transition: border-color 0.2s ease,
+              box-shadow 0.2s ease;
 }
-.search-box input {
-  flex-grow: 1; 
-  background: transparent;
-  border: none;
-  outline: none;
-  color: #02333d;
-  font-size: 1.1rem;
+
+.search-box:focus-within {
+  border-color: #3b82f6;
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.25);
 }
 .search-icon {
-  stroke: #082f36;
-} 
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  stroke: #9ca3af;
+}
 
 .main-content {
   height: 100vh;
   overflow-y: auto;
 }
 /* ========================================================== */
+
+/*=========================================================== */
+.stock-card {
+  width: 90%;
+  max-width: 500px;
+  margin: 2rem auto;
+  background: #1e293b;
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid #334155;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}

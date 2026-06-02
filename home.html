@@ -4,44 +4,57 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
+  <title>Market Dashboard</title>
 </head>
+
 <body>
 
+  <input type="checkbox" id="menu-toggle">
 
-   <input type="checkbox" id="menu-toggle">
+  <label for="menu-toggle" class="toggle-btn">
+    <span class="bar"></span>
+    <span class="bar"></span>
+    <span class="bar"></span>
+  </label>
 
-
-    <!-- Button to Open/Close menu-->
-     <label for="menu-toggle" class="toggle-btn">
-      <span class="bar"></span>
-      <span class="bar"></span>
-      <span class="bar"></span>
-     </label>
-
-
-     <nav class="nav-panel">
+  <nav class="nav-panel">
     <ul class="nav-links">
       <li><a href="home.html" class="nav-btn">Home</a></li>
       <li><a href="news.html" class="nav-btn">News</a></li>
       <li><a href="markets.html" class="nav-btn">Markets</a></li>
       <li><a href="services.html" class="nav-btn">Services</a></li>
     </ul>
-     </nav>
-
+  </nav>
 
   <div class="search-container">
-    <form class="search-box" action="/search" method="GET">
+    <form class="search-box" id="stockForm">
 
-
-      <svg class="search-icon" xmlns="http://w3.org" viewBox="0 0 24 24" fill="none" stroke="#ade8f4"
+      <svg class="search-icon" xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24" fill="none" stroke="#ade8f4"
       stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="11" cy="11" r="8"></circle>
+
+        <circle cx="11" cy="11" r="8"></circle>
         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+
       </svg>
-      <input type="text" placeholder="Search tickers, news..." name="q">
+
+      <input
+        type="text"
+        id="tickerInput"
+        placeholder="Search ticker (AAPL, TSLA, NVDA...)"
+        name="q"
+      >
+
     </form>
   </div>
 
+  <div class="stock-card" id="stockCard">
+    <h2 id="symbol">---</h2>
+    <p id="price">Price: --</p>
+    <p id="change">Change: --</p>
+  </div>
+
+  <script src="script.js"></script>
 
 </body>
 </html>
