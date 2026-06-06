@@ -1,0 +1,93 @@
+body {
+  padding-top: 60px;
+  background-color: #02010a;
+}
+
+/* Menu */
+.top-nav {
+  top: 0;
+  left: 0;
+  display: flex;
+  position: fixed;
+  align-items: center;
+
+  width: 100%;
+  height: 55px;
+  background-color: #04052e;
+  border-bottom: 1px solid #22007c;
+
+  gap: 30px;
+  z-index: 2000;
+  padding: 0 30px;
+}
+.top-nav a{
+  text-decoration: none;
+  color: #f9f5ff;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+}
+.top-nav a:hover {
+  color: #60a5fa;
+}
+/* Search Bar */
+.search-container {
+  display: flex;
+  padding: 0 20px;
+  margin-top: 50px;
+  justify-content: center;
+}
+.search-box {
+  gap: 12px;
+  width: 100%;
+  display: flex;
+  max-width: 700px;
+  padding: 14px 20px;
+  align-items: center;
+
+  border: 1.5px solid;
+  border-radius: 10px;
+  background: #04052e;
+  border: 1px solid #22007c;
+}
+.search-box input {
+  flex: 1;
+  width: 100%;
+  border: none;
+  outline: none;
+  color: #f9f5ff;
+  background: transparent;
+}
+.search-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  stroke: #cbf7ed;
+}
+
+/* Ticker */
+.ticker-wrap {
+  position: fixed;
+  top: 55px;
+  width: 100%;
+  height: 30px;
+  background: #030424;
+  overflow: hidden;
+  border-bottom: 1px solid #22007c;
+  z-index: 1900;
+}
+.ticker {
+  white-space: nowrap;
+  color: #cbf7ed;
+  line-height: 30px;
+  padding-left: 100%;
+  animation: ticker-scroll 30s linear infinite;
+}
+@keyframes ticker-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
