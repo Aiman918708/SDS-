@@ -23,29 +23,23 @@ function draw() {
   for (let i = 0; i < width; i += 50) line(i, 0, i, height);
   for (let j = 0; j < height; j += 50) line(0, j, width, j);
 
-  // 2. Check if main.js has provided stock data yet
   if (currentStockData) {
-    // Set line color dynamically based on stock performance
     if (currentStockData.isPositive) {
-      stroke(16, 185, 129); // Green (#10b981)
+      stroke(16, 185, 129); 
     } else {
-      stroke(239, 68, 68);  // Red (#ef4444)
+      stroke(239, 68, 68);  
     }
     strokeWeight(4);
     noFill();
 
-    // Map prices to the canvas height constraints safely
-    // (Higher stock price goes up on screen, lower goes down)
     let padding = 50;
     let mapY = (val) => map(val, currentStockData.low, currentStockData.high, height - padding, padding);
 
-    // Points across the timeline: Open -> Low -> High -> Current
     let x1 = 100,  y1 = mapY(currentStockData.open);
     let x2 = 266,  y2 = mapY(currentStockData.low);
     let x3 = 433,  y3 = mapY(currentStockData.high);
     let x4 = 600,  y4 = mapY(currentStockData.current);
 
-    // Draw the dynamic trend line
     beginShape();
     vertex(x1, y1);
     vertex(x2, y2);

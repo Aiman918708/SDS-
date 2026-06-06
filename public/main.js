@@ -1,4 +1,3 @@
-// NOTE: Keep these secure. Do not push real keys to public GitHub repositories!
 let currentStockData = null;
 
 const FINNHUB_KEY = 'd8hola9r01qrn5edadr0d8hola9r01qrn5edadrg'; 
@@ -19,20 +18,24 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Stock Search
-stockForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const ticker = tickerInput.value.trim().toUpperCase();
-  if (ticker) {
-    fetchStockData(ticker);
-    tickerInput.value = ''; 
-  }
+stockForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const ticker = tickerInput.value
+        .trim()
+        .toUpperCase();
+
+    if (!ticker) return;
+    await fetchStockData(ticker);
+    await fetchMarketNews(ticker);
+    tickerInput.value = "";
 });
 
 // Fetch Stock Quote
 async function fetchStockData(ticker) {
   try {
     symbolEl.textContent = 'Loading...';
-    const response = await fetch(`https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${FINNHUB_KEY}`);
+    const response = await fetch(
+`https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=${ticker}&apikey=${ALPHA_VANTAGE_KEY}`);
     const data = await response.json();
 
     if (!data.c) {
@@ -40,7 +43,7 @@ async function fetchStockData(ticker) {
       priceEl.textContent = "Price: --";
       changeEl.textContent = "Change: --";
       changeEl.style.color = '#f9f5ff';
-      currentStockData = null; // Clear chart data if not found
+      currentStockData = null;
       return;
     }
 
@@ -53,9 +56,6 @@ async function fetchStockData(ticker) {
     changeEl.textContent = `Change: ${change >= 0 ? '+' : ''}${change} (${percentChange}%)`;
     changeEl.style.color = change >= 0 ? '#10b981' : '#ef4444';
 
-    // --- NEW: Save the pricing data for sketch.js to use ---
-    // Since Finnhub's free quote endpoint only gives daily values, 
-    // we will simulate a mini intraday trend line based on the Open, Low, High, and Current price.
     currentStockData = {
       open: data.o,
       low: data.l,
@@ -93,7 +93,7 @@ async function fetchTickerData() {
 }
 
 // Fetch News
-async function fetchMarketNews() {
+async function fetchMarketNews(ticker = "AAPL") {
   try {
     const response = await fetch(`https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=AAPL&apikey=${ALPHA_VANTAGE_KEY}`);
     const data = await response.json();
