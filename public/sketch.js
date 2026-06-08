@@ -16,8 +16,8 @@ async function loadTickerTape() {
     if (tapeElement) {
       tapeElement.html(html);
     }
-    
-  } catch (error) {
+  } 
+  catch (error) {
     console.error("Connection error:", error);
     let tapeElement = select('#tickerTape');
     if (tapeElement) {
@@ -44,10 +44,12 @@ function draw() {
   stroke(34, 0, 124, 100);
   strokeWeight(1);
 
-  for (let i = 0; i < width; i += 50)
+  for (let i = 0; i < width; i += 50) {
     line(i, 0, i, height);
-  for (let j = 0; j < height; j += 50)
+  }
+  for (let j = 0; j < height; j += 50) {
     line(0, j, width, j);
+  }
 
   // Draw graph if data exists
   if (currentStockData) {

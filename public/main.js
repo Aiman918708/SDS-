@@ -20,14 +20,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Stock Search
 stockForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    const ticker = tickerInput.value.trim().toUpperCase();
+  event.preventDefault();
+  const ticker = tickerInput.value.trim().toUpperCase();
 
-    if (ticker){
-      fetchStockData(ticker);
-      fetchMarketNews(ticker);
-      tickerInput.value = "";
-    }
+  if (ticker){
+    fetchStockData(ticker);
+    fetchMarketNews(ticker);
+    tickerInput.value = "";
+  }
 });
 
 // Fetch Stock Quote
@@ -36,7 +36,7 @@ async function fetchStockData(ticker) {
   try {
     symbolEl.textContent = 'Loading...';
     const response = await fetch(
-    `https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${FINNHUB_KEY}`);
+      `https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${FINNHUB_KEY}`);
     const data = await response.json();
     console.log(data);
 
@@ -70,8 +70,8 @@ async function fetchStockData(ticker) {
       isPositive: change >= 0
     };
     console.log(currentStockData);
-
-  } catch (error) {
+  } 
+  catch (error) {
     console.error("Error fetching stock data:", error);
     symbolEl.textContent = "Error loading data";
     currentStockData = null;
@@ -84,22 +84,23 @@ async function fetchTickerData() {
   let tickerString = "";
   try {
     for (const ticker of popularTickers) {
-  try {
-    const response = await fetch(
-      `https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${FINNHUB_KEY}`
-    );
+      try {
+        const response = await fetch(
+          `https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${FINNHUB_KEY}`
+        );
 
-    const data = await response.json();
-    if (data.c) {
-      const changeSign = data.d >= 0 ? "▲" : "▼";
-      tickerString +=
+        const data = await response.json();
+        if (data.c) {
+          const changeSign = data.d >= 0 ? "▲" : "▼";
+          tickerString +=
         `${ticker}: $${data.c.toFixed(2)} (${changeSign} ${data.dp.toFixed(2)}%) &nbsp;&nbsp;&nbsp;&nbsp;`;
+        }
+      }
+      catch (err) {
+        console.log("Couldn't load", ticker);
+      }
     }
-  }
-   catch (err) {
-    console.log("Couldn't load", ticker);
-  }
-}
+
     tickerTape.innerHTML = tickerString || "Market Data Temporarily Unavailable";
   } 
   catch (error) {
@@ -111,7 +112,8 @@ async function fetchTickerData() {
 // Fetch News
 async function fetchMarketNews(ticker = "AAPL") {
   try {
-    const response = await fetch(`https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=AAPL&apikey=${ALPHA_VANTAGE_KEY}`);
+    const response = await fetch(
+      `https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=${ticker}&limit=20&sort=LATEST&apikey=${ALPHA_VANTAGE_KEY}`);
     const data = await response.json();
 
     if (!data.feed || data.feed.length === 0) {
@@ -120,19 +122,33 @@ async function fetchMarketNews(ticker = "AAPL") {
     }
     newsFeed.innerHTML = '';
 
-    const articles = data.feed.slice(0, 3);
+    const articles = data.feed.slice(0, 15);
     articles.forEach(article => {
       const articleEl = document.createElement('div');
       articleEl.className = 'news-item';
       articleEl.style.marginBottom = '15px';
       
       articleEl.innerHTML = `
-        <h4 style="margin: 0 0 5px 0;"><a href="${article.url}" target="_blank" style="color: #60a5fa; text-decoration: none;">${article.title}</a></h4>
-        <p style="color: #a78bfa; font-size: 0.85rem; margin: 0;">Source: ${article.source} | Sentiment: ${article.overall_sentiment_label}</p>
+      <img src="${article.banner_image}" class="news-image">
+
+      <h3>
+      <a href="${article.url}" target="_blank">
+      ${article.title}
+      </a>
+      </h3>
+
+      <p>
+      ${article.summary}
+      </p>
+
+      <p class="news-source">
+      ${article.source}
+      </p>
       `;
       newsFeed.appendChild(articleEl);
     });
-  } catch (error) {
+  }
+  catch (error) {
     console.error("Error fetching news:", error);
     newsFeed.textContent = "Failed to load news feed.";
   }
