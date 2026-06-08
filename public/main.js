@@ -12,23 +12,26 @@ const changeEl = document.getElementById('change');
 const tickerTape = document.getElementById('tickerTape');
 const newsFeed = document.getElementById('newsFeed');
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   fetchTickerData();
-  fetchMarketNews();
-  fetchStockData('AAPL'); // Default stock on load
+  if (document.getElementById("newsFeed")) {
+    fetchMarketNews();
+  }
+  if (symbolEl && priceEl && changeEl) {
+    fetchStockData("AAPL");
+  }
 });
 
 // Stock Search
-stockForm.addEventListener("submit", async (event) => {
-  event.preventDefault();
-  const ticker = tickerInput.value.trim().toUpperCase();
-
-  if (ticker){
-    fetchStockData(ticker);
-    fetchMarketNews(ticker);
-    tickerInput.value = "";
-  }
-});
+if (stockForm) {
+  stockForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const ticker = tickerInput.value.trim().toUpperCase();
+    if (ticker) {
+      fetchStockData(ticker);
+    }
+  });
+}
 
 // Fetch Stock Quote
 async function fetchStockData(ticker) {
