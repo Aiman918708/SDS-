@@ -8,7 +8,7 @@
 </head>
 
 <body>
-
+  <!--Links For All Webpages-->
   <nav class="top-nav">
     <a href="home.html">Home</a>
     <a href="markets.html">Markets</a>
@@ -17,17 +17,16 @@
     <a href="services.html">Services</a>
   </nav>
 
+  <!-- Ticker on top of the page-->
   <div class="ticker-wrap">
     <div class="ticker" id="tickerTape">
-      Loading market data...
+      Loading market data... <!--Displayed while Data is pulled-->
     </div>
   </div>
 
-  <div class="search-container">
+  <div class="search-container"> <!--Search Bar-->
     <form class="search-box" id="stockForm">
-
-      <svg
-        class="search-icon"
+      <svg class="search-icon"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
         fill="none"
@@ -36,7 +35,6 @@
 
         <circle cx="11" cy="11" r="8"></circle>
         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-
       </svg>
 
       <input
@@ -44,14 +42,17 @@
         id="tickerInput"
         placeholder="Search ticker..."
       >
-
     </form>
   </div>
 
   <div class="stock-card" id="stockCard">
     <h2 id="symbol">---</h2>
-    <p id="price">Price: --</p>
-    <p id="change">Change: --</p>
+    <p id="price">
+      Price: --
+    </p>
+    <p id="change">
+      Change: --
+    </p>
   </div>
 
   <div class="chart-container">

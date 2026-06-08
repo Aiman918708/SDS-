@@ -1,3 +1,4 @@
+// Manages Website, Asks server.js for data
 let currentStockData = null;
 
 const FINNHUB_KEY = 'd8hola9r01qrn5edadr0d8hola9r01qrn5edadrg'; 
@@ -18,25 +19,26 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Stock Search
-stockForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const ticker = tickerInput.value
-        .trim()
-        .toUpperCase();
+stockForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const ticker = tickerInput.value.trim().toUpperCase();
 
-    if (!ticker) return;
-    await fetchStockData(ticker);
-    await fetchMarketNews(ticker);
-    tickerInput.value = "";
+    if (ticker){
+      fetchStockData(ticker);
+      fetchMarketNews(ticker);
+      tickerInput.value = "";
+    }
 });
 
 // Fetch Stock Quote
 async function fetchStockData(ticker) {
+  console.log("Searching:", ticker);
   try {
     symbolEl.textContent = 'Loading...';
     const response = await fetch(
-`https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=${ticker}&apikey=${ALPHA_VANTAGE_KEY}`);
+    `https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${FINNHUB_KEY}`);
     const data = await response.json();
+    console.log(data);
 
     if (!data.c) {
       symbolEl.textContent = "Ticker not found";
@@ -51,6 +53,10 @@ async function fetchStockData(ticker) {
     const change = data.d.toFixed(2);
     const percentChange = data.dp.toFixed(2);
 
+    console.log("Ticker:", ticker);
+    console.log("Price:", currentPrice);
+    console.log("Change:", change);
+
     symbolEl.textContent = ticker;
     priceEl.textContent = `Price: $${currentPrice}`;
     changeEl.textContent = `Change: ${change >= 0 ? '+' : ''}${change} (${percentChange}%)`;
@@ -63,6 +69,7 @@ async function fetchStockData(ticker) {
       current: data.c,
       isPositive: change >= 0
     };
+    console.log(currentStockData);
 
   } catch (error) {
     console.error("Error fetching stock data:", error);
@@ -75,18 +82,27 @@ async function fetchStockData(ticker) {
 async function fetchTickerData() {
   const popularTickers = ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'NVDA'];
   let tickerString = "";
-
   try {
     for (const ticker of popularTickers) {
-      const response = await fetch(`https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${FINNHUB_KEY}`);
-      const data = await response.json();
-      if (data.c) {
-        const changeSign = data.d >= 0 ? '▲' : '▼';
-        tickerString += `${ticker}: $${data.c.toFixed(2)} (${changeSign} ${data.dp.toFixed(2)}%) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`;
-      }
+  try {
+    const response = await fetch(
+      `https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${FINNHUB_KEY}`
+    );
+
+    const data = await response.json();
+    if (data.c) {
+      const changeSign = data.d >= 0 ? "▲" : "▼";
+      tickerString +=
+        `${ticker}: $${data.c.toFixed(2)} (${changeSign} ${data.dp.toFixed(2)}%) &nbsp;&nbsp;&nbsp;&nbsp;`;
     }
+  }
+   catch (err) {
+    console.log("Couldn't load", ticker);
+  }
+}
     tickerTape.innerHTML = tickerString || "Market Data Temporarily Unavailable";
-  } catch (error) {
+  } 
+  catch (error) {
     console.error("Error generating ticker tape:", error);
     tickerTape.textContent = "Error loading market tape.";
   }

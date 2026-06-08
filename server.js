@@ -1,3 +1,4 @@
+// Sends back data to main.js
 require('dotenv').config();
 
 const express = require('express');
