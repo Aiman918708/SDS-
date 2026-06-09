@@ -134,6 +134,23 @@ body {
 .news-item a:hover {
     color: #60a5fa;
 }
-body {
-  overflow-x: hidden;
+
+.ai-summary-card{
+    width:90%;
+    max-width:700px;
+    margin:40px auto;
+    padding:20px;
+
+    background:#04052e;
+    border:1px solid #22007c;
+    border-radius:12px;
+    color:white;
+}
+.ai-summary-card h2{
+    margin-top:0;
+    color:#bacee6;
+}
+#aiSummary{
+    line-height:1.8;
+    font-size:16px;
 }

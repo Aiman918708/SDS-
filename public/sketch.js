@@ -55,7 +55,7 @@ function draw() {
   if (currentStockData) {
 
     stroke(currentStockData.isPositive ? color(16,185,129) : color(239,68,68));
-    strokeWeight(4);
+    strokeWeight(3);
     noFill();
 
     const padding = 40;
@@ -90,6 +90,10 @@ function draw() {
     text(((currentStockData.high + currentStockData.low) / 2).toFixed(2), 45, height / 2);
     text(currentStockData.low.toFixed(2), 45, height - 50);
 
+    noFill();
+    stroke(currentStockData.isPositive ? color(16,185,129) : color(239,68,68));
+    strokeWeight(3);
+
     beginShape();
     vertex(x1,y1);
     vertex(x2,y2);
@@ -114,9 +118,14 @@ function draw() {
     circle(x4,y4,10);
 
     fill(255);
-    textAlign(LEFT);
-    text("$" + currentStockData.current.toFixed(2), x4 + 10, y4);
-  } 
+    textSize(14);
+    textAlign(CENTER);
+
+    text("$" + currentStockData.open.toFixed(2), x1, y1 - 15);
+    text("$" + currentStockData.low.toFixed(2), x2, y2 - 15);
+    text("$" + currentStockData.high.toFixed(2), x3, y3 - 15);
+    text("$" + currentStockData.current.toFixed(2), x4, y4 - 15);
+      } 
   
   else {
 
@@ -128,3 +137,12 @@ function draw() {
 
   }
 }
+
+fill(255);
+noStroke();
+textSize(14);
+
+text("Open", 600, 30);
+text("Low", 600, 50);
+text("High", 600, 70);
+text("Current", 600, 90);
