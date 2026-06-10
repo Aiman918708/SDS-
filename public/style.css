@@ -107,11 +107,16 @@ body {
   border-radius: 12px;
 }
 
-.chart-container {
-  color: white;
-  width: 90%;
-  max-width: 800px;
-  margin: 40px auto;
+.chart-container{
+    color:white;
+    width:90%;
+    max-width:800px;
+    margin:40px auto;
+    padding:20px;
+
+    background:#04052e;
+    border:1px solid #22007c;
+    border-radius:12px;
 }
 .news-container {
   color: white;
@@ -135,7 +140,7 @@ body {
     color: #60a5fa;
 }
 
-.ai-summary-card{
+.summary-card{
     width:90%;
     max-width:700px;
     margin:40px auto;
@@ -146,11 +151,11 @@ body {
     border-radius:12px;
     color:white;
 }
-.ai-summary-card h2{
+.summary-card h2{
     margin-top:0;
     color:#bacee6;
 }
-#aiSummary{
+#summary{
     line-height:1.8;
     font-size:16px;
 }
