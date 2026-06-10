@@ -86,29 +86,30 @@ async function fetchStockData(ticker) {
 
 // Summary
 function generateMarketSummary(data, ticker) {
-    let summary = `${ticker} is currently trading at $${data.c.toFixed(2)}. `;
+  let summary = `${ticker} is currently trading at $${data.c.toFixed(2)}. `;
 
-    if (data.dp > 3) {
-        summary += "The stock is having a strong positive trading session. ";
-    }
-    else if (data.dp > 0) {
-        summary += "The stock is slightly higher today. ";
-    }
-    else if (data.dp < -3) {
-        summary += "The stock is experiencing significant selling pressure today. ";
-    }
-    else {
-        summary += "The stock is relatively stable today. ";
-    }
-    summary += `Today's range is $${data.l.toFixed(2)} to $${data.h.toFixed(2)}. `;
+  if (data.dp > 3) {
+    summary += "The stock is having a strong positive trading session. ";
+  }
+  else if (data.dp > 0) {
+    summary += "The stock is slightly higher today. ";
+  }
+  else if (data.dp < -3) {
+    summary += "The stock is experiencing significant selling pressure today. ";
+  }
+  else {
+    summary += "The stock is relatively stable today. ";
+  }
+  summary += `Today's range is $${data.l.toFixed(2)} to $${data.h.toFixed(2)}. `;
 
-    if (data.c > data.o) {
-        summary += "The stock is trading above today's opening price.";
-    } else {
-        summary += "The stock is trading below today's opening price.";
-    }
+  if (data.c > data.o) {
+    summary += "The stock is trading above today's opening price.";
+  }
+  else {
+    summary += "The stock is trading below today's opening price.";
+  }
 
-    summaryEl.textContent = summary;
+  summaryEl.textContent = summary;
 }
 
 // Fetch Ticker Tape
