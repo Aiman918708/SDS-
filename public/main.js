@@ -1,7 +1,7 @@
 // Manages Website, Asks server.js for data
 let currentStockData = null;
 
-const aiSummaryEl = document.getElementById("aiSummary");
+const summaryEl = document.getElementById("summary");
 
 const FINNHUB_KEY = 'd8hola9r01qrn5edadr0d8hola9r01qrn5edadrg'; 
 const ALPHA_VANTAGE_KEY = 'WK1B39F1ZP86WLZN';
@@ -75,7 +75,7 @@ async function fetchStockData(ticker) {
       isPositive: change >= 0
     };
     console.log(currentStockData);
-    generateAISummary(data, ticker);
+    generateMarketSummary(data, ticker);
   } 
   catch (error) {
     console.error("Error fetching stock data:", error);
@@ -84,29 +84,31 @@ async function fetchStockData(ticker) {
   }
 }
 
-// AI Summary
-function generateAISummary(data, ticker){
-
+// Summary
+function generateMarketSummary(data, ticker) {
     let summary = `${ticker} is currently trading at $${data.c.toFixed(2)}. `;
-    if(data.dp > 3){
+
+    if (data.dp > 3) {
         summary += "The stock is having a strong positive trading session. ";
     }
-    else if(data.dp > 0){
+    else if (data.dp > 0) {
         summary += "The stock is slightly higher today. ";
     }
-    else if(data.dp < -3){
+    else if (data.dp < -3) {
         summary += "The stock is experiencing significant selling pressure today. ";
     }
-    else{
+    else {
         summary += "The stock is relatively stable today. ";
     }
     summary += `Today's range is $${data.l.toFixed(2)} to $${data.h.toFixed(2)}. `;
-    if(data.c > data.o){
+
+    if (data.c > data.o) {
         summary += "The stock is trading above today's opening price.";
-    }else{
+    } else {
         summary += "The stock is trading below today's opening price.";
     }
-    aiSummaryEl.textContent = summary;
+
+    summaryEl.textContent = summary;
 }
 
 // Fetch Ticker Tape
