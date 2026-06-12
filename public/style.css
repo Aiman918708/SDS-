@@ -1,6 +1,6 @@
 body {
   padding-top: 95px;
-  background-color: #02010a;
+  background-color: #050b08;
   overflow-x: hidden;
 }
 
@@ -14,8 +14,8 @@ body {
 
   width: 100%;
   height: 55px;
-  background-color: #04052e;
-  border-bottom: 1px solid #22007c;
+  background-color: #071a12;
+  border-bottom: 1px solid #14532d;
 
   gap: 30px;
   z-index: 2000;
@@ -24,7 +24,7 @@ body {
 
 .top-nav a {
   text-decoration: none;
-  color: #f9f5ff;
+  color: #d1fae5;
   font-weight: 500;
   font-size: 0.95rem;
   transition: color 0.2s ease;
@@ -32,6 +32,7 @@ body {
 
 .top-nav a:hover {
   color: #dee3e9;
+  text-shadow: 0 0 10px rgba(52, 211, 153, 0.4);
 }
 /* Search Bar */
 .search-container {
@@ -50,8 +51,8 @@ body {
 
   border: 1.5px solid;
   border-radius: 10px;
-  background: #04052e;
-  border: 1px solid #22007c;
+  background: #071a12;
+  border: 1px solid #14532d;
 }
 .search-box input {
   flex: 1;
@@ -65,7 +66,7 @@ body {
   width: 18px;
   height: 18px;
   flex-shrink: 0;
-  stroke: #cbf7ed;
+  stroke: #34d399;
 }
 
 /* Ticker */
@@ -74,14 +75,14 @@ body {
   top: 55px;
   width: 100%;
   height: 30px;
-  background: #030424;
+  background: #06130d;
   overflow: hidden;
-  border-bottom: 1px solid #22007c;
+  border-bottom: 1px solid #14532d;
   z-index: 1900;
 }
 .ticker {
   white-space: nowrap;
-  color: #cbf7ed;
+  color: #34d399;
   line-height: 30px;
   padding-left: 100%;
   animation: ticker-scroll 30s linear infinite;
@@ -97,30 +98,39 @@ body {
 
 /* Displays ticker, price and change */
 .stock-card{
-  color: white;
+  color: #d1fae5;
   margin: 40px auto;
   width: 90%;
   max-width: 800px;
   padding: 20px;
 
-  background: #04052e;
-  border: 1px solid #22007c;
+  background: #071a12;
+  border: 1px solid #14532d;
   border-radius: 12px;
 }
 
 .chart-container{
-    color:white;
+    color: #d1fae5;
     width:90%;
     max-width:800px;
     margin:40px auto;
     padding:20px;
 
-    background:#04052e;
-    border:1px solid #22007c;
+    background: #071a12;
+    border:1px solid #14532d;
     border-radius:12px;
+    box-shadow: 0 0 20px rgba(52, 211, 153, 0.08);
+}
+.chart-container h2 {
+  margin-top: 0;
+  color: #34d399;
+}
+canvas {
+  display: block;
+  margin: 0 auto;
 }
 .news-container {
-  color: white;
+  color: #d1fae5;
   width: 90%;
   max-width: 800px;
   margin: 40px auto;
@@ -132,31 +142,40 @@ body {
   border-radius: 8px;
 }
 .news-item a {
-    color: white;
+    color: #d1fae5;
     text-decoration: none;
     font-size: 28px;
     font-weight: 600;
 }
 .news-item a:hover {
-    color: #60a5fa;
+    color: #34d399;
+    text-shadow: 0 0 10px rgba(52, 211, 153, 0.4);
+}
+.news-item a:visited {
+  color: #9ca3af;
 }
 
-.summary-card{
-    width:90%;
-    max-width:700px;
-    margin:40px auto;
-    padding:20px;
+.summary-card {
+  width: 90%;
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 20px;
 
-    background:#04052e;
-    border:1px solid #22007c;
-    border-radius:12px;
-    color:white;
+  background: #071a12;
+  border: 1px solid #14532d;
+  border-radius: 12px;
+
+  color: #d1fae5;
+  box-shadow: 0 0 20px rgba(52, 211, 153, 0.06);
 }
-.summary-card h2{
-    margin-top:0;
-    color:#bacee6;
+
+.summary-card h2 {
+  margin-top: 0;
+  color: #34d399;
 }
-#summary{
-    line-height:1.8;
-    font-size:16px;
+
+#summary {
+  line-height: 1.8;
+  font-size: 16px;
+  color: #d1fae5;
 }
