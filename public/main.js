@@ -49,7 +49,7 @@ async function fetchStockData(ticker) {
       symbolEl.textContent = "Ticker not found";
       priceEl.textContent = "Price: --";
       changeEl.textContent = "Change: --";
-      changeEl.style.color = '#f9f5ff';
+      changeEl.style.color = '#ffffff';
       currentStockData = null;
       return;
     }
@@ -135,7 +135,7 @@ async function fetchTickerData() {
       }
     }
 
-    tickerTape.innerHTML = tickerString || "Market Data Temporarily Unavailable";
+    tickerTape.innerHTML = tickerString || "Market Data Is Temporarily Unavailable";
   } 
   catch (error) {
     console.error("Error generating ticker tape:", error);
