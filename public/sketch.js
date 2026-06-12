@@ -61,9 +61,11 @@ function draw() {
   }
 
   noFill();
-  stroke(0, 255, 150);
-  strokeWeight(2);
+  stroke(52, 211, 153, 200);
+  strokeWeight(3);
 
+  drawingContext.shadowBlur = 12;
+drawingContext.shadowColor = "rgba(52, 211, 153, 0.6)";
   beginShape();
 
   for (let i = 0; i < prices.length; i++) {
@@ -73,6 +75,7 @@ function draw() {
   }
 
   endShape();
+  drawingContext.shadowBlur = 0;
 
   // dots
   fill(255);
