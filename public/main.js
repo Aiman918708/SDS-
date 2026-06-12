@@ -1,189 +1,160 @@
-// Manages Website, Asks server.js for data
-let currentStockData = null;
-
-const summaryEl = document.getElementById("summary");
-
-const FINNHUB_KEY = 'd8hola9r01qrn5edadr0d8hola9r01qrn5edadrg'; 
+const FINNHUB_KEY = 'd8hola9r01qrn5edadr0d8hola9r01qrn5edadrg';
 const ALPHA_VANTAGE_KEY = 'WK1B39F1ZP86WLZN';
 
-const stockForm = document.getElementById('stockForm');
-const tickerInput = document.getElementById('tickerInput');
-const symbolEl = document.getElementById('symbol');
-const priceEl = document.getElementById('price');
-const changeEl = document.getElementById('change');
-const tickerTape = document.getElementById('tickerTape');
-const newsFeed = document.getElementById('newsFeed');
+let currentStockData = null;
+
+let stockForm, tickerInput, symbolEl, priceEl, changeEl, summaryEl, tickerTape, newsFeed;
 
 document.addEventListener("DOMContentLoaded", () => {
+
+  stockForm = document.getElementById("stockForm");
+  tickerInput = document.getElementById("tickerInput");
+  symbolEl = document.getElementById("symbol");
+  priceEl = document.getElementById("price");
+  changeEl = document.getElementById("change");
+  summaryEl = document.getElementById("summary");
+  tickerTape = document.getElementById("tickerTape");
+  newsFeed = document.getElementById("newsFeed");
+
+  fetchStockData("AAPL");
   fetchTickerData();
-  if (document.getElementById("newsFeed")) {
-    fetchMarketNews();
-  }
-  if (symbolEl && priceEl && changeEl) {
-    fetchStockData("AAPL");
+  fetchMarketNews("AAPL");
+
+  if (stockForm) {
+    stockForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const search = tickerInput.value.trim();
+      if (!search) return;
+
+      const ticker = await searchTicker(search);
+
+      if (ticker) {
+        fetchStockData(ticker);
+        fetchMarketNews(ticker);
+      } else {
+        symbolEl.textContent = "Results not found";
+        priceEl.textContent = "Price: --";
+        changeEl.textContent = "Change: --";
+      }
+
+      tickerInput.value = "";
+    });
   }
 });
 
-// Stock Search
-if (stockForm) {
-  stockForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const ticker = tickerInput.value.trim().toUpperCase();
-    if (ticker) {
-      fetchStockData(ticker);
-    }
-  });
+async function searchTicker(search) {
+  const response = await fetch(
+    `https://finnhub.io/api/v1/search?q=${encodeURIComponent(search)}&token=${FINNHUB_KEY}`
+  );
+
+  const data = await response.json();
+  if (!data.result || data.result.length === 0) return null;
+
+  return data.result[0].symbol;
 }
 
-// Fetch Stock Quote
 async function fetchStockData(ticker) {
-  console.log("Searching:", ticker);
   try {
-    symbolEl.textContent = 'Loading...';
+    symbolEl.textContent = "Loading...";
+
     const response = await fetch(
-      `https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${FINNHUB_KEY}`);
+      `https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${FINNHUB_KEY}`
+    );
+
     const data = await response.json();
-    console.log(data);
 
     if (!data.c) {
       symbolEl.textContent = "Ticker not found";
-      priceEl.textContent = "Price: --";
-      changeEl.textContent = "Change: --";
-      changeEl.style.color = '#ffffff';
-      currentStockData = null;
       return;
     }
 
-    const currentPrice = data.c.toFixed(2);
-    const change = data.d.toFixed(2);
-    const percentChange = data.dp.toFixed(2);
-
-    console.log("Ticker:", ticker);
-    console.log("Price:", currentPrice);
-    console.log("Change:", change);
-
     symbolEl.textContent = ticker;
-    priceEl.textContent = `Price: $${currentPrice}`;
-    changeEl.textContent = `Change: ${change >= 0 ? '+' : ''}${change} (${percentChange}%)`;
-    changeEl.style.color = change >= 0 ? '#10b981' : '#ef4444';
+    priceEl.textContent = `Price: $${data.c.toFixed(2)}`;
+    changeEl.textContent =
+      `Change: ${data.d >= 0 ? "+" : ""}${data.d.toFixed(2)} (${data.dp.toFixed(2)}%)`;
+
+    changeEl.style.color = data.d >= 0 ? "green" : "red";
 
     currentStockData = {
       open: data.o,
-      low: data.l,
       high: data.h,
+      low: data.l,
       current: data.c,
-      isPositive: change >= 0
+      isPositive: data.d >= 0
     };
-    console.log(currentStockData);
-    generateMarketSummary(data, ticker);
-  } 
-  catch (error) {
-    console.error("Error fetching stock data:", error);
-    symbolEl.textContent = "Error loading data";
-    currentStockData = null;
+
+    generateMarketSummary(ticker, data);
+
+  } catch (err) {
+    console.error(err);
   }
 }
 
-// Summary
-function generateMarketSummary(data, ticker) {
-  let summary = `${ticker} is currently trading at $${data.c.toFixed(2)}. `;
+function generateMarketSummary(ticker, data) {
+  if (!summaryEl) return;
 
-  if (data.dp > 3) {
-    summary += "The stock is having a strong positive trading session. ";
-  }
-  else if (data.dp > 0) {
-    summary += "The stock is slightly higher today. ";
-  }
-  else if (data.dp < -3) {
-    summary += "The stock is experiencing significant selling pressure today. ";
-  }
-  else {
-    summary += "The stock is relatively stable today. ";
-  }
-  summary += `Today's range is $${data.l.toFixed(2)} to $${data.h.toFixed(2)}. `;
-
-  if (data.c > data.o) {
-    summary += "The stock is trading above today's opening price.";
-  }
-  else {
-    summary += "The stock is trading below today's opening price.";
-  }
-
-  summaryEl.textContent = summary;
+  summaryEl.textContent =
+    `${ticker} is trading at $${data.c.toFixed(2)} with a daily change of ${data.dp.toFixed(2)}%.`;
 }
 
-// Fetch Ticker Tape
 async function fetchTickerData() {
-  const popularTickers = ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'NVDA'];
-  let tickerString = "";
-  try {
-    for (const ticker of popularTickers) {
-      try {
-        const response = await fetch(
-          `https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${FINNHUB_KEY}`
-        );
+  const tickers = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "NVDA"];
 
-        const data = await response.json();
-        if (data.c) {
-          const changeSign = data.d >= 0 ? "▲" : "▼";
-          tickerString +=
-        `${ticker}: $${data.c.toFixed(2)} (${changeSign} ${data.dp.toFixed(2)}%) &nbsp;&nbsp;&nbsp;&nbsp;`;
-        }
-      }
-      catch (err) {
-        console.log("Couldn't load", ticker);
-      }
+  let html = "";
+
+  for (const t of tickers) {
+    const res = await fetch(
+      `https://finnhub.io/api/v1/quote?symbol=${t}&token=${FINNHUB_KEY}`
+    );
+
+    const d = await res.json();
+
+    if (d.c) {
+      html += `${t}: $${d.c.toFixed(2)} (${d.dp.toFixed(2)}%) &nbsp;&nbsp;&nbsp;`;
     }
+  }
 
-    tickerTape.innerHTML = tickerString || "Market Data Is Temporarily Unavailable";
-  } 
-  catch (error) {
-    console.error("Error generating ticker tape:", error);
-    tickerTape.textContent = "Error loading market tape.";
+  if (tickerTape) {
+    tickerTape.innerHTML = html;
   }
 }
 
-// Fetch News
 async function fetchMarketNews(ticker = "AAPL") {
   try {
+    if (!newsFeed) return;
+
+    newsFeed.innerHTML = "Loading news...";
+
     const response = await fetch(
-      `https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=${ticker}&limit=20&sort=LATEST&apikey=${ALPHA_VANTAGE_KEY}`);
+      `https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=${ticker}&apikey=${ALPHA_VANTAGE_KEY}`
+    );
+
     const data = await response.json();
 
     if (!data.feed || data.feed.length === 0) {
-      newsFeed.textContent = "No recent news available.";
+      newsFeed.innerHTML = "No news found.";
       return;
     }
-    newsFeed.innerHTML = '';
 
-    const articles = data.feed.slice(0, 15);
-    articles.forEach(article => {
-      const articleEl = document.createElement('div');
-      articleEl.className = 'news-item';
-      articleEl.style.marginBottom = '15px';
-      
-      articleEl.innerHTML = `
-      <img src="${article.banner_image}" class="news-image">
+    newsFeed.innerHTML = "";
 
-      <h3>
-      <a href="${article.url}" target="_blank">
-      ${article.title}
-      </a>
-      </h3>
+    data.feed.slice(0, 8).forEach(article => {
+      const div = document.createElement("div");
+      div.className = "news-item";
 
-      <p>
-      ${article.summary}
-      </p>
-
-      <p class="news-source">
-      ${article.source}
-      </p>
+      div.innerHTML = `
+        <a href="${article.url}" target="_blank">
+          <h3>${article.title}</h3>
+        </a>
+        <p>${article.summary ? article.summary.slice(0, 180) + "..." : ""}</p>
       `;
-      newsFeed.appendChild(articleEl);
+
+      newsFeed.appendChild(div);
     });
-  }
-  catch (error) {
-    console.error("Error fetching news:", error);
-    newsFeed.textContent = "Failed to load news feed.";
+
+  } catch (err) {
+    console.error(err);
+    if (newsFeed) newsFeed.innerHTML = "Failed to load news.";
   }
 }

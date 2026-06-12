@@ -1,14 +1,12 @@
-// Displays data provided by main.js
 async function loadTickerTape() {
   try {
-    const response = await fetch('/api/tickers'); 
+    const response = await fetch('/api/tickers');
     const data = await response.json();
 
     let html = '';
     data.forEach(stock => {
       let symbol = stock["01. symbol"] || "N/A";
       let change = stock["10. change percent"] || "0.00%";
-      
       html += `${symbol} ${change} &nbsp;&bull;&nbsp; `;
     });
 
@@ -16,8 +14,7 @@ async function loadTickerTape() {
     if (tapeElement) {
       tapeElement.html(html);
     }
-  } 
-  catch (error) {
+  } catch (error) {
     console.error("Connection error:", error);
     let tapeElement = select('#tickerTape');
     if (tapeElement) {
@@ -28,121 +25,62 @@ async function loadTickerTape() {
 
 function setup() {
   let container = select('.chart-placeholder');
+
   if (container) {
     container.html('');
     let canvas = createCanvas(700, 350);
     canvas.parent(container);
   }
-  loadTickerTape(); 
+
+  loadTickerTape();
 }
 
 function draw() {
-  console.log(currentStockData);
   background(4, 5, 46);
 
-  // Grid
   stroke(34, 0, 124, 100);
-  strokeWeight(1);
+  for (let i = 0; i < width; i += 50) line(i, 0, i, height);
+  for (let j = 0; j < height; j += 50) line(0, j, width, j);
 
-  for (let i = 0; i < width; i += 50) {
-    line(i, 0, i, height);
+  if (!currentStockData || !currentStockData.prices) {
+    fill(200);
+    noStroke();
+    textAlign(CENTER, CENTER);
+    textSize(18);
+    text("Loading chart data...", width / 2, height / 2);
+    return;
   }
-  for (let j = 0; j < height; j += 50) {
-    line(0, j, width, j);
+
+  const prices = currentStockData.prices;
+
+  const minVal = Math.min(...prices);
+  const maxVal = Math.max(...prices);
+
+  function mapY(v) {
+    return map(v, minVal, maxVal, height - 50, 50);
   }
 
-  // Draw graph if data exists
-  if (currentStockData) {
+  noFill();
+  stroke(0, 255, 150);
+  strokeWeight(2);
 
-    stroke(currentStockData.isPositive ? color(16,185,129) : color(239,68,68));
-    strokeWeight(3);
-    noFill();
+  beginShape();
 
-    const padding = 40;
+  for (let i = 0; i < prices.length; i++) {
+    let x = map(i, 0, prices.length - 1, 50, width - 50);
+    let y = mapY(prices[i]);
+    vertex(x, y);
+  }
 
-    function mapY(value){
-      return map(
-        value,
-        currentStockData.low,
-        currentStockData.high,
-        height-padding,
-        padding
-      );
-    }
+  endShape();
 
-    const x1 = 80;
-    const x2 = 250;
-    const x3 = 450;
-    const x4 = 620;
+  // dots
+  fill(255);
+  noStroke();
 
-    const y1 = mapY(currentStockData.open);
-    const y2 = mapY(currentStockData.low);
-    const y3 = mapY(currentStockData.high);
-    const y4 = mapY(currentStockData.current);
-
-    // Price labels
-    fill(255);
-    noStroke();
-    textSize(14);
-    textAlign(RIGHT, CENTER);
-
-    text(currentStockData.high.toFixed(2), 45, 50);
-    text(((currentStockData.high + currentStockData.low) / 2).toFixed(2), 45, height / 2);
-    text(currentStockData.low.toFixed(2), 45, height - 50);
-
-    noFill();
-    stroke(currentStockData.isPositive ? color(16,185,129) : color(239,68,68));
-    strokeWeight(3);
-
-    beginShape();
-    vertex(x1,y1);
-    vertex(x2,y2);
-    vertex(x3,y3);
-    vertex(x4,y4);
-    endShape();
-
-    fill(255);
-    textAlign(CENTER);
-
-    text("Open", x1, height - 20);
-    text("Low", x2, height - 20);
-    text("High", x3, height - 20);
-    text("Current", x4, height - 20);
-
-    fill(255);
-    noStroke();
-
-    circle(x1,y1,8);
-    circle(x2,y2,8);
-    circle(x3,y3,8);
-    circle(x4,y4,10);
-
-    fill(255);
-    textSize(14);
-    textAlign(CENTER);
-
-    text("$" + currentStockData.open.toFixed(2), x1, y1 - 15);
-    text("$" + currentStockData.low.toFixed(2), x2, y2 - 15);
-    text("$" + currentStockData.high.toFixed(2), x3, y3 - 15);
-    text("$" + currentStockData.current.toFixed(2), x4, y4 - 15);
-      } 
-  
-  else {
-
-    fill(180);
-    noStroke();
-    textAlign(CENTER,CENTER);
-    textSize(20);
-    text("Awaiting stock data...", width/2, height/2);
-
+  for (let i = 0; i < prices.length; i += 10) {
+    let x = map(i, 0, prices.length - 1, 50, width - 50);
+    let y = mapY(prices[i]);
+    circle(x, y, 5);
   }
 }
-
-fill(255);
-noStroke();
-textSize(14);
-
-text("Open", 600, 30);
-text("Low", 600, 50);
-text("High", 600, 70);
-text("Current", 600, 90);
